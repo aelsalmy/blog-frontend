@@ -20,3 +20,20 @@ export const login = async (username: string , password: string) => {
     }
   }
 }
+
+export const logout = async () => {
+  try{
+    const resp = await api.post("/auth/signout")
+    return {
+      status: true,
+      resp: resp
+    }
+  }
+  catch(err:any){
+    console.log(err.response.data.message)
+    return {
+      status: false , 
+      message: err.response.data.message
+    }
+  }
+}

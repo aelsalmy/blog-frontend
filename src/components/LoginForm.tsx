@@ -4,6 +4,7 @@ import { CenteredWrapper } from "./wrappers/CenteredWrapper.styled";
 import { Text2Comp } from "./common/text/text2.styled";
 import CustomTextField from "./common/custom.input";
 import { Text4Comp, Text4CompError } from "./common/text/text4.styled";
+import { useNavigate } from "react-router-dom";
 
 type LoginFormParams = {
   onLogIn: (email: string , password: string) => void,
@@ -16,6 +17,7 @@ function LoginForm({
 }:LoginFormParams){
   const [username , setUsername] = useState<string>()
   const [password , setPassword] = useState<string>()
+  const navigate = useNavigate()
   
   return (
     <>
@@ -43,6 +45,12 @@ function LoginForm({
                 onClick={() => onLogIn(username! , password!)}
               >
                 Login
+              </Button>
+              <Button 
+                sx={{mt:2}} variant="text"
+                onClick={() => navigate("/register")}
+              >
+                Don't have an account? Register Now!
               </Button>
             </Stack>
           </Paper>

@@ -1,7 +1,7 @@
 import { createContext , useState } from "react"
 import { jwtDecode } from "jwt-decode"
 
-interface User {
+export interface User {
   userId: number,
   role: string[]
 }

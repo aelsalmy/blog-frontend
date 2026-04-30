@@ -4,10 +4,13 @@ import { Container } from "@mui/material";
 import { login } from "../api/auth";
 import { useUser } from "../hooks/user.hook";
 import { jwtDecode } from "jwt-decode";
+import type { User } from "../contexts/user.context";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage (){
   const [error , setError] = useState<string|undefined>()
-  const {user , setUser} = useUser()
+  const {setUser} = useUser()
+  const navigate = useNavigate()
 
   const handleLogIn = async (email: string , password: string) => {
     const {status , message , resp} = await login(email , password)
@@ -19,14 +22,14 @@ function LoginPage (){
 
       localStorage.setItem("accessToken" , accessToken)
 
-      const decodedToken = jwtDecode(accessToken)
+      const decodedToken = jwtDecode<User>(accessToken)
 
       setUser({
         userId: decodedToken.userId,
         role: decodedToken.role
       })
 
-      console.log(user)
+      navigate("/")
     }
     else{
       setError(message || "Something went wrong")
