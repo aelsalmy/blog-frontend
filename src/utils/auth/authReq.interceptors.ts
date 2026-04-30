@@ -1,4 +1,4 @@
-import { api } from "../configs/axios.config";
+import { api } from "../../configs/axios.config";
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken")
