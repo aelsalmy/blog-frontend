@@ -3,13 +3,16 @@ import React, { useState } from "react";
 import { CenteredWrapper } from "./wrappers/CenteredWrapper.styled";
 import { Text2Comp } from "./common/text/text2.styled";
 import CustomTextField from "./common/custom.input";
+import { Text4Comp, Text4CompError } from "./common/text/text4.styled";
 
 type LoginFormParams = {
-  onLogIn: (email: string , password: string) => void
+  onLogIn: (email: string , password: string) => void,
+  error: string | undefined
 }
 
 function LoginForm({
-  onLogIn
+  onLogIn,
+  error
 }:LoginFormParams){
   const [username , setUsername] = useState<string>()
   const [password , setPassword] = useState<string>()
@@ -29,6 +32,12 @@ function LoginForm({
                 label="password" type="password"
                 value={password} onChange={(e) => setPassword(e.target.value)}
               />
+              {
+                error && 
+                  <Container>
+                    <Text4CompError>{error}</Text4CompError>
+                  </Container>
+              }
               <Button 
                 sx={{mt:2}} variant="contained"
                 onClick={() => onLogIn(username! , password!)}
