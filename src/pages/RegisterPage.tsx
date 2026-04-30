@@ -39,7 +39,6 @@ export function RegisterPage() {
             navigate("/login")
         }
         else{
-            console.log(resp)
             if(resp.status === 400){
                 setError(message)
             }

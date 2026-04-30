@@ -21,16 +21,18 @@ function LoginPage (){
 
     if(status){
       setError(undefined)
-
+      
       const {accessToken} = resp!.data
 
       localStorage.setItem("accessToken" , accessToken)
 
       const decodedToken = jwtDecode<User>(accessToken)
 
+      console.log(decodedToken)
+
       setUser({
         userId: decodedToken.userId,
-        role: decodedToken.role
+        roles: decodedToken.roles
       })
 
       navigate("/")

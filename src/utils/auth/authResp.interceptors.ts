@@ -1,5 +1,5 @@
 import type { AxiosError } from "axios";
-import { api } from "../configs/axios.config";
+import { api } from "../../configs/axios.config";
 
 
 let isRefreshing = false

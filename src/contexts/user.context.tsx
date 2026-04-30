@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode"
 
 export interface User {
   userId: number,
-  role: string[]
+  roles: string[]
 }
 
 interface AuthContextType {
