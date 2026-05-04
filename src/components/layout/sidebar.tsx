@@ -1,4 +1,4 @@
-import { Drawer, IconButton, List } from "@mui/material";
+import { Button, Drawer, IconButton, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DrawerItem } from "./DrawerItem";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logout } from "../../api/auth";
-import { useState } from "react";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
+import { useUser } from "../../hooks/user.hook";
 
 const StyledDrawerItem = styled(DrawerItem)({
     borderRadius: "10px",
@@ -23,16 +23,22 @@ const StyledDrawerItem = styled(DrawerItem)({
 })
 
 export function Sidebar({open , setOpen}: {open: boolean, setOpen: (open: boolean) => void}) {
-    const [selected , setSelected] = useState<string>("")
     const navigate = useNavigate()
+    const {setUser} = useUser()
+
 
     const handleLogout = async () => {
         const {status , message} = await logout()
+
         if(status){
+            localStorage.removeItem("accessToken")
+            setUser(null)
             navigate("/login")
-        }
+        }   
         else{
             console.log(message)
+            setUser(null)
+            navigate("/login")
         }
     }
 
@@ -64,13 +70,15 @@ export function Sidebar({open , setOpen}: {open: boolean, setOpen: (open: boolea
                             setOpen(false)
                         }} 
                     />
+
                     <StyledDrawerItem 
-                        component={NavLink}
-                        to="/logout"
                         icon={<LogoutIcon />} 
                         label="Logout" 
+                        component={Button}
+                        sx={{color: "black"}}
                         onClick={() => handleLogout()} 
                     />
+
                 </List>
             </Drawer>
         </div>

@@ -4,6 +4,8 @@ import { AuthProvider } from './contexts/user.context.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import './utils/auth/authReq.interceptors'
+import './utils/auth/authResp.interceptors'
 
 
 createRoot(document.getElementById('root')!).render(

@@ -23,7 +23,7 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest: any = error.config
 
-    if(error?.response?.status === 401 && !originalRequest._retry){
+    if(error?.response?.status === 401 && !originalRequest._retry && !originalRequest.url?.includes("/auth/refresh")){
       if(isRefreshing){
         return new Promise((resolve , reject) => {
           failedQueue.push({ resolve , reject })
@@ -37,7 +37,7 @@ api.interceptors.response.use(
     isRefreshing = true
 
     try{
-      const res = await api.post("/auth/refresh"); // cookie auto-sent
+      const res = await api.post("/auth/refresh");
 
       const newAccessToken = (res.data as any).accessToken;
 
@@ -51,6 +51,7 @@ api.interceptors.response.use(
       return api(originalRequest);
 
     } catch(refreshError){
+        console.log("Refresh error")
         processQueue(refreshError, null);
 
         localStorage.removeItem("accessToken");
