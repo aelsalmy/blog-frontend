@@ -1,6 +1,6 @@
 import { Button, Stack, type SxProps } from "@mui/material"
 import { Text2Comp } from "../text/text2.styled"
-import { ErrorMessage, Field, Formik } from "formik"
+import { Formik } from "formik"
 import { toFormikValidate } from "../../../utils/zodFormikAdapter"
 import { z } from "zod"
 import { Text4CompError } from "../text/text4.styled"

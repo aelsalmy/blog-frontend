@@ -4,13 +4,15 @@ import LoginPage from './pages/LoginPage'
 import { Route, Routes } from 'react-router-dom'
 import { ProfilePage } from './pages/ProfilePage'
 import { AdminPage } from './pages/AdminPage'
-import { BlogPage } from './pages/BlogPage'
 import { ProtectedRoutes } from './utils/routes/ProtectedRoutes'
 import { PublicRoutes } from './utils/routes/PublicRoutes'
 import { RegisterPage } from './pages/RegisterPage'
 import { RoleProtectedRoute } from './utils/routes/RoleProtectedRoute'
 import { ROLES } from './constants/roles'
 import { Layout } from './pages/Layout'
+import { FeedPage } from './pages/FeedPage'
+import { MyPostsPage } from './pages/MyPostsPage'
+import { PostForm } from './pages/PostForm'
 
 function App() {
   return (
@@ -19,7 +21,11 @@ function App() {
         <Layout>
           <Routes>
 
-            //Public Routes accessed by anyone even if they are not authenticated
+            {/* Routes accessed by anyone even if they are not authenticated */}
+            <Route path="/feed" element={<FeedPage />} />
+
+
+            {/* Public Routes accessed by users that are not authenticated */}
             <Route element={<PublicRoutes />}>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
@@ -28,7 +34,8 @@ function App() {
             //Protected Routes accessed by users or admins that are authenticated
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<ProfilePage />} />
-              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/posts" element={<MyPostsPage />}/>
+              <Route path="/posts/create" element={<PostForm />}/>
             </Route>
 
             //Routes accessed by admins only

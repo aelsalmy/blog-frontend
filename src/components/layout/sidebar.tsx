@@ -63,10 +63,21 @@ export function Sidebar({open , setOpen}: {open: boolean, setOpen: (open: boolea
                     <StyledDrawerItem 
                         icon={<ArticleIcon />} 
                         component={NavLink}
-                        to="/blog"
-                        label="Blog Posts" 
+                        to="/feed"
+                        label="Feed" 
                         onClick={() => {
-                            navigate("/blog")
+                            navigate("/feed")
+                            setOpen(false)
+                        }} 
+                    />
+
+                    <StyledDrawerItem 
+                        icon={<ArticleIcon />} 
+                        component={NavLink}
+                        to="/posts"
+                        label="My Posts" 
+                        onClick={() => {
+                            navigate("/posts")
                             setOpen(false)
                         }} 
                     />

@@ -6,3 +6,9 @@ export const CenteredWrapper = styled("div")({
   justifyContent: "center",
   height: "100vh"
 })
+
+export const HorizontalCenteredWrapper = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+  width: "100wh"
+})
