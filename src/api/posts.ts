@@ -31,7 +31,7 @@ export const getUserPosts = async (page: number , limit?: 10) => {
     }
 }
 
-export const createPost = async(content: string) => {
+export const createPost = async (content: string) => {
     try{
         const resp = await api.post("/posts" , {
             content: content
@@ -42,6 +42,42 @@ export const createPost = async(content: string) => {
           resp: resp
         }
       }
+    catch(err:any){
+        return {
+            status: false,
+            resp: err.response,
+            message: err.response.data.message
+        }
+    }
+}
+
+export const publishPost = async (postId: number) => {
+    try{
+        const resp = await api.post(`/posts/${postId}`)
+    
+        return {
+          status: true,
+          resp: resp
+        }
+      }
+    catch(err:any){
+        return {
+            status: false,
+            resp: err.response,
+            message: err.response.data.message
+        }
+    }
+}
+
+export const deletePost = async (postId: number) => {
+    try{
+        const resp = await api.delete(`/posts/${postId}`)
+    
+        return {
+          status: true,
+          resp: resp
+        }
+    }
     catch(err:any){
         return {
             status: false,

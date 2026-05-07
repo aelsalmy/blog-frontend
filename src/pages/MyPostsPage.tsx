@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Grid, styled } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { getUserPosts } from "../api/posts";
+import { deletePost, getUserPosts, publishPost } from "../api/posts";
 import { Post } from "../components/post";
 import { HorizontalCenteredWrapper } from "../components/wrappers/CenteredWrapper.styled";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +71,32 @@ export function MyPostsPage() {
 
         return () => observer.disconnect()
     } , [])
+    
+    const handlePublishPost = async (postId: number) => {
+        const {status , resp , message} = await publishPost(postId)
+
+        if(!status){
+            console.log(message || "Something went wrong")
+        }
+
+        setPosts(prev =>
+            prev.map(post =>
+              post.id === postId
+                ? { ...post, isPublished: true }
+                : post
+            )
+          );
+    }
+
+    const handleDeletePost = async (postId: number) => {
+        const {status , resp , message} = await deletePost(postId)
+
+        if(!status){
+            console.log(message || "Something went wrong")
+        }
+
+        setPosts(prev => prev.filter(p => p.id !== postId));
+    }
 
     return (
         <>
@@ -78,10 +104,16 @@ export function MyPostsPage() {
                 <Grid size={2}>
                 </Grid>
                 <Grid size={8}>
-                    {posts.map((post) => <Post post={post}/>)}
+                    {posts.map((post) => <Post onDelete={handleDeletePost} 
+                                               onPublish={handlePublishPost} 
+                                               isOwner={true} post={post}/>)}
 
                     <LoadingDiv ref={loaderRef} style={{ height: "50px" }}>
-                        {loading && <CircularProgress size={32}/>}
+                        {
+                            posts.length !== 0? 
+                                loading && <CircularProgress size={32}/>:
+                                "No Posts Yet!!"    
+                        }
                     </LoadingDiv>
                 </Grid>
                 <Grid size={2}>

@@ -70,10 +70,14 @@ export function FeedPage() {
         <>
             <Grid sx={{display: "flex" , justifyContent:"center"}} container spacing={2}>
                 <Grid size={8}>
-                    {posts.map((post) => <Post post={post}/>)}
+                    {posts.map((post) => <Post isOwner={false} post={post}/>)}
                     
                     <LoadingDiv ref={loaderRef} style={{ height: "50px" }}>
-                        {loading && <CircularProgress size={32}/>}
+                        {
+                        posts.length !== 0? 
+                            loading && <CircularProgress size={32}/>:
+                            "No Posts Yet!!"    
+                        }
                     </LoadingDiv>
                 </Grid>
             </Grid>
