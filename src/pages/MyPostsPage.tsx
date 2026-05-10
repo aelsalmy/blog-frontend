@@ -5,7 +5,6 @@ import { Post } from "../components/post";
 import { HorizontalCenteredWrapper } from "../components/wrappers/CenteredWrapper.styled";
 import { useNavigate } from "react-router-dom";
 import { EditPostDialog } from "../components/EditPostDialog";
-import { fa } from "zod/v4/locales";
 
 const LoadingDiv = styled("div")({
     width: "100%",
@@ -79,7 +78,7 @@ export function MyPostsPage() {
     } , [])
     
     const handlePublishPost = async (postId: number) => {
-        const {status , resp , message} = await publishPost(postId)
+        const {status , message} = await publishPost(postId)
 
         if(!status){
             console.log(message || "Something went wrong")
@@ -95,7 +94,7 @@ export function MyPostsPage() {
     }
 
     const handleDeletePost = async (postId: number) => {
-        const {status , resp , message} = await deletePost(postId)
+        const {status , message} = await deletePost(postId)
 
         if(!status){
             console.log(message || "Something went wrong")
@@ -111,7 +110,7 @@ export function MyPostsPage() {
     }
 
     const handleEditPost = async (values: any , file: File|null , postId: number) => {
-        const {status , message , resp} = await updatePost(postId , values.content)
+        const {status} = await updatePost(postId , values.content)
 
         if(status){
             setEditDialogShown(false)
@@ -131,7 +130,7 @@ export function MyPostsPage() {
         }
 
         if(file){
-            const {status , message , resp} = await uploadImage(postId , file)
+            const {status , resp} = await uploadImage(postId , file)
 
             if(status){
                 setEditDialogShown(false)

@@ -12,7 +12,7 @@ interface PostParams {
     onEdit?: (postId: number) => void
 }
 
-const StyledCard = styled(Card)({
+export const StyledCard = styled(Card)({
     margin: "16px"
 })
 
@@ -58,8 +58,6 @@ export function Post({
             }
         }
     }
-
-    {/*TODO: Add Edit post handling and Upload Image to post*/}
     
     return (
         <>

@@ -4,7 +4,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import Visibility from "@mui/icons-material/Visibility"
 import { useField } from "formik"
 
-const StyledTextField = styled(TextField)({
+export const StyledTextField = styled(TextField)({
     marginTop: "16px",
     "& .MuiInputBase-root": {
       height: 50,
@@ -12,16 +12,18 @@ const StyledTextField = styled(TextField)({
 })
 
 interface CustomFormFieldProps {
-    label: string
+    label?: string
     type: string
     name: string
     value?: string
+    disabled?: boolean
 }
 
 function CustomFormField({
     label,
     type,
     name,
+    disabled = false,
 }: CustomFormFieldProps){
     const [showPassword , setShowPassword] = useState<boolean>(false)
     const [field , meta] = useField(name)
@@ -32,6 +34,7 @@ function CustomFormField({
             {...field}
             label={label}
             name={name}
+            disabled={disabled}
             type={
             type === "password"? 
                 showPassword? 
