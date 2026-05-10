@@ -7,14 +7,16 @@ import { Text4CompError } from "../text/text4.styled"
 import CustomFormField from "./CustomFormField"
 
 interface FormProps {
-    title: string
+    title?: string
     fields: FormFieldProps[]
     buttons?: ButtonProps[]
-    submitButtonText: string
+    submitButtonText?: string
     schema: z.ZodType
     error?: string
     initialValues: Record<string, any>
-    onSubmit: (data: any) => void | Promise<void>
+    onSubmit?: (data: any) => void | Promise<void>
+    showSubmit?: boolean
+    id?: string
 }
 
 interface ButtonProps {
@@ -30,6 +32,7 @@ interface FormFieldProps {
     label: string
     type: string
     key: string
+    value?: string
 }
 
 export function CustomForm({
@@ -37,10 +40,12 @@ export function CustomForm({
     fields, 
     buttons,
     schema,
-    submitButtonText,
     initialValues,
     error,
     onSubmit,
+    submitButtonText = "Submit",
+    showSubmit = true,
+    id
 }: FormProps) {
 
     return (
@@ -51,40 +56,45 @@ export function CustomForm({
                 onSubmit={onSubmit}
             > 
                 {({handleSubmit , isSubmitting}) => (
-                    <Stack>
-                        <Text2Comp>{title}</Text2Comp>
-                        {fields.map(field => (
-                            <CustomFormField 
-                                key={field.key}
-                                label={field.label}
-                                type={field.type}
-                                name={field.key}
-                            />
-                        ))}
-                        {error && <Text4CompError>{error}</Text4CompError>}
-                        <Button 
-                            type="submit" 
-                            disabled={isSubmitting} 
-                            variant="contained"
-                            sx={{mt: 2}}
-                            onClick={() => handleSubmit()}
-                        >
-                            {submitButtonText}
-                        </Button>
-                        {buttons && buttons.map(button => (
-                            <Button 
-                                type="submit" 
-                                disabled={isSubmitting} 
-                                variant={button.variant}
-                                color={button.color}
-                                size={button.size}
-                                sx={{mt: 2}}
-                                onClick={() => button.onClick()}
-                            >
-                            {button.text}
-                        </Button>
-                        ))}
-                    </Stack>
+                    <form id={id} onSubmit={handleSubmit}>
+                        <Stack>
+                            <Text2Comp>{title}</Text2Comp>
+                            {fields.map(field => (
+                                <CustomFormField 
+                                    key={field.key}
+                                    label={field.label}
+                                    type={field.type}
+                                    name={field.key}
+                                    value={field.value}
+                                />
+                            ))}
+                            {error && <Text4CompError>{error}</Text4CompError>}
+                            {showSubmit &&
+                                <Button 
+                                    type="submit" 
+                                    disabled={isSubmitting} 
+                                    variant="contained"
+                                    sx={{mt: 2}}
+                                    onClick={() => handleSubmit()}
+                                >
+                                    {submitButtonText}
+                                </Button>
+                            }
+                            {buttons && buttons.map(button => (
+                                <Button 
+                                    type="submit" 
+                                    disabled={isSubmitting} 
+                                    variant={button.variant}
+                                    color={button.color}
+                                    size={button.size}
+                                    sx={{mt: 2}}
+                                    onClick={() => button.onClick()}
+                                >
+                                    {button.text}
+                                </Button>
+                            ))}
+                        </Stack>
+                    </form>
                 )}
             </Formik>
         </>

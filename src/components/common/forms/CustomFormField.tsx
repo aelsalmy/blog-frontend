@@ -1,5 +1,4 @@
 import { IconButton, InputAdornment, styled, TextField } from "@mui/material"
-import { Text4CompError } from "../text/text4.styled"
 import { useState } from "react"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import Visibility from "@mui/icons-material/Visibility"
@@ -16,6 +15,7 @@ interface CustomFormFieldProps {
     label: string
     type: string
     name: string
+    value?: string
 }
 
 function CustomFormField({

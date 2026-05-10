@@ -86,3 +86,47 @@ export const deletePost = async (postId: number) => {
         }
     }
 }
+
+export const updatePost = async (postId:number , content: string) => {
+    try{
+        const resp = await api.put(`/posts/${postId}` , {
+            content: content
+        })
+    
+        return {
+          status: true,
+          resp: resp
+        }
+      }
+    catch(err:any){
+        return {
+            status: false,
+            resp: err.response,
+            message: err.response.data.message
+        }
+    }
+}
+
+export const uploadImage = async (postId:number , file: File) => {
+    const formData = new FormData()
+
+    console.log("file:" , typeof(file))
+
+    formData.append("file" , file)
+
+    try{
+        const resp = await api.post(`/posts/${postId}/image` , formData)
+    
+        return {
+          status: true,
+          resp: resp
+        }
+      }
+    catch(err:any){
+        return {
+            status: false,
+            resp: err.response,
+            message: err.response.data.message
+        }
+    }
+}

@@ -59,6 +59,8 @@ export function Post({
         }
     }
 
+    {/*TODO: Add Edit post handling and Upload Image to post*/}
+    
     return (
         <>
             <StyledCard sx={{m:"16px"}}>
@@ -98,7 +100,7 @@ export function Post({
                                 Publish
                             </Button>
                         }
-                        <IconButton>
+                        <IconButton onClick={() => onEdit(post.id)}>
                             <EditIcon/>
                         </IconButton>
                         <IconButton onClick={() => onDelete(post.id)}>

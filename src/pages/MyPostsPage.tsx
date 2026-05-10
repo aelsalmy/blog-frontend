@@ -1,9 +1,11 @@
-import { Button, CircularProgress, Grid, styled } from "@mui/material";
+import { Alert, Button, CircularProgress, Grid, Snackbar, styled } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { deletePost, getUserPosts, publishPost } from "../api/posts";
+import { deletePost, getUserPosts, publishPost, updatePost, uploadImage } from "../api/posts";
 import { Post } from "../components/post";
 import { HorizontalCenteredWrapper } from "../components/wrappers/CenteredWrapper.styled";
 import { useNavigate } from "react-router-dom";
+import { EditPostDialog } from "../components/EditPostDialog";
+import { fa } from "zod/v4/locales";
 
 const LoadingDiv = styled("div")({
     width: "100%",
@@ -21,6 +23,10 @@ export function MyPostsPage() {
     const loaderRef = useRef(null)
     const [loading , setLoading] = useState(true)
     const navigate = useNavigate()
+    const [editDialogShown , setEditDialogShown] = useState(false)
+    const [selectedPost , setSelectedPost] = useState("")
+    const [editError , setEditError] = useState("")
+    const [editSuccessOpen , setEditSuccessOpen] = useState(false)
 
     const getPosts = async () => {          
         
@@ -53,7 +59,7 @@ export function MyPostsPage() {
 
     useEffect(() => {
         getPosts()
-    } , [page])
+    } , [page , posts])
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -98,6 +104,56 @@ export function MyPostsPage() {
         setPosts(prev => prev.filter(p => p.id !== postId));
     }
 
+    const handleOpenDialog = async (postId: number) => {
+        setSelectedPost(posts.find((p) => p.id === postId))
+        
+        setEditDialogShown(true)
+    }
+
+    const handleEditPost = async (values: any , file: File|null , postId: number) => {
+        const {status , message , resp} = await updatePost(postId , values.content)
+
+        if(status){
+            setEditDialogShown(false)
+
+            setPosts((prev) => prev.map((post) => 
+                post.id === postId 
+                    ? {
+                        ...post,
+                        content: values.content,
+                    }
+                    : post
+            ))
+        }
+        else{
+            setEditError("Something went wrong")
+            return
+        }
+
+        if(file){
+            const {status , message , resp} = await uploadImage(postId , file)
+
+            if(status){
+                setEditDialogShown(false)
+
+                setPosts((prev) => prev.map((post) =>
+                    post.id === postId
+                        ? {
+                            ...post,
+                            image: resp.data?.image,
+                        }
+                        : post
+                ))
+            }
+            else{
+                setEditError("Something went wrong")
+                return
+            }
+        }
+
+        setEditSuccessOpen(true)
+    }
+
     return (
         <>
             <Grid sx={{display: "flex" , justifyContent:"center"}} container spacing={2}>
@@ -105,8 +161,27 @@ export function MyPostsPage() {
                 </Grid>
                 <Grid size={8}>
                     {posts.map((post) => <Post onDelete={handleDeletePost} 
-                                               onPublish={handlePublishPost} 
+                                               onPublish={handlePublishPost}
+                                               onEdit={handleOpenDialog} 
                                                isOwner={true} post={post}/>)}
+
+                    <EditPostDialog
+                        open={editDialogShown}
+                        onClose={() => setEditDialogShown(false)}
+                        post={selectedPost}
+                        handleEdit={handleEditPost}
+                        error={editError}
+                    />
+
+                    <Snackbar
+                        open={editSuccessOpen}
+                        autoHideDuration={3000}
+                        onClose={() => setEditSuccessOpen(false)}
+                    >
+                        <Alert severity="success" variant="filled">
+                            Post updated successfully
+                        </Alert>
+                    </Snackbar>
 
                     <LoadingDiv ref={loaderRef} style={{ height: "50px" }}>
                         {
