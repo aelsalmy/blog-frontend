@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 
 interface PostParams {
     post: any,
-    isOwner: boolean,
+    isOwner?: boolean,
+    isAdmin?: boolean
     onDelete?: (postId: number) => void
     onPublish?: (postId: number) => void
     onEdit?: (postId: number) => void
+    onApproval?: (postId: number) => void
 }
 
 export const StyledCard = styled(Card)({
@@ -32,12 +34,15 @@ const StyledActionFooter = styled(CardActions)({
 
 export function Post({
     post, 
-    isOwner,
+    isOwner = false,
+    isAdmin = false,
     onDelete,
     onEdit,
-    onPublish
+    onPublish,
+    onApproval
 }: PostParams) {
     const [isPublished , setIsPublished] = useState(false)
+    const [isApproved , setIsApproved] = useState(false)
 
     useEffect(() => {
         if(post.isPublished){
@@ -45,13 +50,18 @@ export function Post({
         } else {
             setIsPublished(false)
         }
+        if(post.isApproved){
+            setIsApproved(true)
+        } else {
+            setIsApproved(false)
+        }
     } , [])
 
     const postStatus = () => {
         if(!isPublished){
             return <Chip label="Not Published" color="error"/>
         } else {
-            if (!post.isApproved){
+            if (!isApproved){
                 return <Chip label="Pending" color="warning"/>
             } else {
                 return <Chip label="Approved" color="success"/>
@@ -70,7 +80,7 @@ export function Post({
                     title={post.user.username}
                     subheader={post.user.email}
                     action= {
-                        isOwner && postStatus()
+                        (isOwner || isAdmin) && postStatus()
                     }
                 />
                 {post.image &&
@@ -84,26 +94,42 @@ export function Post({
                 <CardContent>
                     {post.content}
                 </CardContent>
-                {isOwner &&
+                {(isOwner || isAdmin) &&
                     <StyledActionFooter>
-                        {!isPublished && 
+                        {(isAdmin && !isApproved) && 
                             <Button 
                                 size="small" 
                                 variant="outlined"
                                 onClick={() => {
-                                    setIsPublished(true)
-                                    onPublish(post.id)
+                                    setIsApproved(true)
+                                    onApproval(post.id)
                                 }}
                             >
-                                Publish
+                                Approve
                             </Button>
                         }
-                        <IconButton onClick={() => onEdit(post.id)}>
-                            <EditIcon/>
-                        </IconButton>
-                        <IconButton onClick={() => onDelete(post.id)}>
-                            <DeleteIcon color="error"/>
-                        </IconButton>
+                        {isOwner && 
+                            <>
+                                {!isPublished && 
+                                    <Button 
+                                        size="small" 
+                                        variant="outlined"
+                                        onClick={() => {
+                                            setIsPublished(true)
+                                            onPublish(post.id)
+                                        }}
+                                    >
+                                        Publish
+                                    </Button>
+                                }
+                                <IconButton onClick={() => onEdit(post.id)}>
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton onClick={() => onDelete(post.id)}>
+                                    <DeleteIcon color="error"/>
+                                </IconButton>
+                            </>
+                        }
                     </StyledActionFooter>
                 }
             </StyledCard>

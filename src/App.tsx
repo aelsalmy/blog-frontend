@@ -3,7 +3,6 @@ import './App.css'
 import LoginPage from './pages/LoginPage'
 import { Route, Routes } from 'react-router-dom'
 import { ProfilePage } from './pages/ProfilePage'
-import { AdminPage } from './pages/AdminPage'
 import { ProtectedRoutes } from './utils/routes/ProtectedRoutes'
 import { PublicRoutes } from './utils/routes/PublicRoutes'
 import { RegisterPage } from './pages/RegisterPage'
@@ -13,6 +12,7 @@ import { Layout } from './pages/Layout'
 import { FeedPage } from './pages/FeedPage'
 import { MyPostsPage } from './pages/MyPostsPage'
 import { PostForm } from './pages/PostForm'
+import { ApprovePostsPage } from './pages/ApprovePosts'
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
 
             //Routes accessed by admins only
             <Route element={<RoleProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
-              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin" element={<ApprovePostsPage />} />
             </Route>
 
           </Routes>

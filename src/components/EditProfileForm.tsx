@@ -32,16 +32,17 @@ export function EditProfileForm({
     const [editing, setEditing] = useState(false);
     const [editSuccessOpen , setEditSuccessOpen] = useState(false)
 
+    const submitHelper = async (values) => {
+        await onEdit(values);
+        setEditing(false);
+        setEditSuccessOpen(true);
+    }
+
     return (
         <Formik
             initialValues={initialValues}
             validate={toFormikValidate(schema)}
-            onSubmit={
-                async (values) => {
-                    await onEdit(values);
-                    setEditing(false);
-                    setEditSuccessOpen(true);
-            }}
+            onSubmit={submitHelper}
             enableReinitialize
         >
             {({handleSubmit, isSubmitting , resetForm}) =>

@@ -5,10 +5,13 @@ import { useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
 import LogoutIcon from "@mui/icons-material/Logout";
+import CheckCircleIcon  from '@mui/icons-material/Check';
 import { logout } from "../../api/auth";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../hooks/user.hook";
+import { useEffect, useState } from "react";
+import { ROLES } from "../../constants/roles";
 
 const StyledDrawerItem = styled(DrawerItem)({
     borderRadius: "10px",
@@ -24,7 +27,8 @@ const StyledDrawerItem = styled(DrawerItem)({
 
 export function Sidebar({open , setOpen}: {open: boolean, setOpen: (open: boolean) => void}) {
     const navigate = useNavigate()
-    const {setUser} = useUser()
+    const {user , setUser} = useUser()
+    const [isAdmin , setIsAdmin] = useState(false)
 
 
     const handleLogout = async () => {
@@ -41,6 +45,11 @@ export function Sidebar({open , setOpen}: {open: boolean, setOpen: (open: boolea
             navigate("/login")
         }
     }
+
+    useEffect(() => {
+        console.log(user)
+        setIsAdmin(user!.roles.some(role => role === ROLES.ADMIN))
+    } , [])
 
     return (
         <div className="w-50vw h-100vh">
@@ -81,6 +90,19 @@ export function Sidebar({open , setOpen}: {open: boolean, setOpen: (open: boolea
                             setOpen(false)
                         }} 
                     />
+                    
+                    {isAdmin &&
+                         <StyledDrawerItem 
+                            icon={<CheckCircleIcon />} 
+                            component={NavLink}
+                            to="/admin"
+                            label="Approve Posts" 
+                            onClick={() => {
+                                navigate("/admin")
+                                setOpen(false)
+                            }} 
+                        />
+                    }
 
                     <StyledDrawerItem 
                         icon={<LogoutIcon />} 
