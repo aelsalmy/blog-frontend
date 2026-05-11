@@ -7,7 +7,7 @@ export interface User {
 }
 
 interface AuthContextType {
-  user: User,
+  user: User | null,
   setUser: (user: User | null) => void
 }
 

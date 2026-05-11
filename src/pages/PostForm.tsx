@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from "@mui/material";
+import { Container, Paper } from "@mui/material";
 import { CustomForm } from "../components/common/forms/CustomForm";
 import { CenteredWrapper } from "../components/wrappers/CenteredWrapper.styled";
 import { createPostSchema } from "../schemas/post.schemas";

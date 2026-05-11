@@ -12,6 +12,9 @@ export function DrawerItem({
     label, 
     ...props
 }: DrawerItemProps) {
+
+    if (!props.component) return null;
+
     return (
         <ListItem component={props.component} sx={{width: "35vh" }} {...props}>
             <ListItemIcon>{icon}</ListItemIcon>

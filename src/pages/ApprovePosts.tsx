@@ -14,7 +14,7 @@ const LoadingDiv = styled("div")({
 })
 
 export function ApprovePostsPage() {
-    const [posts , setPosts] = useState([])
+    const [posts , setPosts] = useState<Post[]>([])
     const [page , setPage] = useState(1)
     const allRendered = useRef(false)
     const loaderRef = useRef(null)
@@ -26,9 +26,11 @@ export function ApprovePostsPage() {
         if(!allRendered.current){
             const resp = await getNotApprovedPosts(page)
 
+            if(!resp) return
+
             if (page > resp.data.lastPage) return 
 
-            const newPosts = resp.data.posts
+            const newPosts: Post[] = resp.data.posts
 
             setPosts((prev) => {
                 const existingIds = new Set(prev.map(p => p.id));
