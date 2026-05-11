@@ -16,14 +16,14 @@ const LoadingDiv = styled("div")({
 })
 
 export function MyPostsPage() {
-    const [posts , setPosts] = useState([])
+    const [posts , setPosts] = useState<Post[]>([])
     const [page , setPage] = useState(1)
     const allRendered = useRef(false)
     const loaderRef = useRef(null)
     const [loading , setLoading] = useState(true)
     const navigate = useNavigate()
     const [editDialogShown , setEditDialogShown] = useState(false)
-    const [selectedPost , setSelectedPost] = useState("")
+    const [selectedPost , setSelectedPost] = useState<Post>()
     const [editError , setEditError] = useState("")
     const [editSuccessOpen , setEditSuccessOpen] = useState(false)
 
@@ -38,11 +38,11 @@ export function MyPostsPage() {
 
             if (page > resp.data.lastPage) return 
 
-            const newPosts = resp.data.posts
+            const newPosts: Post[] = resp.data.posts
 
             setPosts((prev) => {
                 const existingIds = new Set(prev.map(p => p.id));
-                const filtered = newPosts.filter(p => !existingIds.has(p.id));
+                const filtered = newPosts.filter((p) => !existingIds.has(p.id));
                 return [...prev, ...filtered];
             });
 

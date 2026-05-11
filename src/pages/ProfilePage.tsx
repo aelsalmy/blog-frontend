@@ -1,4 +1,4 @@
-import { Avatar , CardContent, CircularProgress, Container, Grid, Stack, styled } from "@mui/material";
+import { Avatar , CardContent, CircularProgress, Grid, Stack, styled } from "@mui/material";
 import { green } from "@mui/material/colors";
 import { StyledCard } from "../components/post";
 import { CenteredWrapper, HorizontalCenteredWrapper } from "../components/wrappers/CenteredWrapper.styled";
@@ -46,10 +46,14 @@ export function ProfilePage() {
     const handleEdit = async (values: any) => {
         const userProfile = await updateProfile(values.profession , values.city , values.country)
 
-        setUser((prev) => ({
-            ...prev , 
-            profile: userProfile
-        }))
+        setUser((prev) =>
+            prev? 
+                {
+                    ...prev,
+                    profile: userProfile,
+                }
+                : prev
+        );
     }
     
     return (

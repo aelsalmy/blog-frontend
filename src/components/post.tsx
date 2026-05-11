@@ -14,6 +14,19 @@ interface PostParams {
     onApproval?: (postId: number) => void
 }
 
+export interface Post {
+    content: string
+    isPublished: boolean
+    isApproved: boolean
+    userId: number,
+    image: string,
+    id: number,
+    user: {
+        username: string,
+        email: string
+    }
+}
+
 export const StyledCard = styled(Card)({
     margin: "16px"
 })
@@ -34,12 +47,12 @@ const StyledActionFooter = styled(CardActions)({
 
 export function Post({
     post, 
+    onDelete = () => {},
+    onEdit = () => {},
+    onPublish = () => {},
+    onApproval = () => {},
     isOwner = false,
     isAdmin = false,
-    onDelete,
-    onEdit,
-    onPublish,
-    onApproval
 }: PostParams) {
     const [isPublished , setIsPublished] = useState(false)
     const [isApproved , setIsApproved] = useState(false)

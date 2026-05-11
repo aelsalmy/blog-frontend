@@ -10,7 +10,7 @@ export const getUserAcc = async () => {
     }
 }
 
-export const updateProfile = async (profession , city , country) => {
+export const updateProfile = async (profession: string , city: string , country: string) => {
     try{
         const resp = await api.put("/users/profile" , {
             profession,

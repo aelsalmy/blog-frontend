@@ -42,7 +42,7 @@ export function CustomForm({
     schema,
     initialValues,
     error,
-    onSubmit,
+    onSubmit = () => {},
     submitButtonText = "Submit",
     showSubmit = true,
     id

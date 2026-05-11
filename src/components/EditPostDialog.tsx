@@ -24,13 +24,21 @@ const NoImageContainer = styled(Container)({
     justifyContent: "center"
 })
 
+interface EditPostDialogProps {
+    post: any
+    onClose: (arg0: boolean) => void
+    open: boolean
+    handleEdit: (values: any , file: File|null , postId: number) => void
+    error: string
+}
+
 export function EditPostDialog({
     post,
     onClose,
     open,
     handleEdit,
     error
-}) {
+} : EditPostDialogProps) {
     const inputRef = useRef<HTMLInputElement | null>(null)
     const [image , setImage] = useState<File | null>(null)
 
