@@ -3,6 +3,7 @@ import { CustomForm } from "./common/forms/CustomForm";
 import { createPostSchema } from "../schemas/post.schemas";
 import { useRef, useState } from "react";
 import { Text4Comp } from "./common/text/text4.styled";
+import type { Post } from "./post";
 
 const ImageContainer = styled(Container)({
     padding: 0,
@@ -25,7 +26,7 @@ const NoImageContainer = styled(Container)({
 })
 
 interface EditPostDialogProps {
-    post: any
+    post: Post | undefined
     onClose: (arg0: boolean) => void
     open: boolean
     handleEdit: (values: any , file: File|null , postId: number) => void
@@ -51,6 +52,8 @@ export function EditPostDialog({
 
         if(file) setImage(file)
     }
+
+    if (!post) return null
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth> 
